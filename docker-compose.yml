@@ -1,0 +1,55 @@
+# Local run:   cp .env.example .env   (edit values)   then   docker compose up --build
+# App: http://localhost:8082   Swagger: http://localhost:8082/swagger-ui.html   Mailpit (local e-mail): http://localhost:8025
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: milansetu
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    # no "ports:" -> database is not reachable from outside Docker
+
+  mailpit:                       # free local SMTP server + web inbox (used when NOTIFICATION_MODE=email)
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"
+
+  backend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/backend.Dockerfile
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      DB_URL: jdbc:mysql://mysql:3306/milansetu?serverTimezone=UTC
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:8082}
+      NOTIFICATION_MODE: ${NOTIFICATION_MODE:-mock}
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/frontend.Dockerfile
+    ports:
+      - "8082:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
