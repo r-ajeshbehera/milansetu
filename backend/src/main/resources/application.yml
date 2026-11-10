@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: milansetu
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/milansetu?serverTimezone=UTC}
+    username: ${DB_USERNAME:milansetu}
+    password: ${DB_PASSWORD:change-me}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    locations: classpath:db/migration
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:ZGV2LW9ubHktc2VjcmV0LWNoYW5nZS1tZS1kZXYtb25seS1zZWNyZXQtMTIzNDU2}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:30}
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173}
+  rate-limit:
+    public-per-minute: ${SENSITIVE_RATE_LIMIT:20}
+    login-per-minute: ${LOGIN_RATE_LIMIT:5}
+  otp:
+    expiry-minutes: 10
+    max-attempts: 5
+    max-issues-per-hour: 3
+    retention-days: ${OTP_RETENTION_DAYS:30}
+  notifications:
+    mode: ${NOTIFICATION_MODE:mock}          # mock | email
+    from-address: ${MAIL_FROM:no-reply@milansetu.local}
+  jobs:
+    enabled: ${JOBS_ENABLED:true}
+    stale-after-minutes: ${STALE_AFTER_MINUTES:120}
