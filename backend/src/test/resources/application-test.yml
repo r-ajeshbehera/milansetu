@@ -1,0 +1,11 @@
+spring:
+  flyway:
+    locations: classpath:db/migration,classpath:db/demo
+app:
+  jobs:
+    enabled: false
+  rate-limit:
+    public-per-minute: 1000
+    login-per-minute: 1000
+  notifications:
+    mode: mock
