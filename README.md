@@ -1,5 +1,7 @@
 # MilanSetu — Festival Lost & Found Reunification Platform
 
+![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3-6DB33F?logo=springboot&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL-database-4479A1?logo=mysql&logoColor=white) ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black) ![Docker](https://img.shields.io/badge/Docker-compose-2496ED?logo=docker&logoColor=white) ![License](https://img.shields.io/badge/license-MIT-blue)
+
 > **Portfolio project with demonstration data. It is not an officially approved emergency-response or child-safety system.** Real-world use would need organisational, legal and privacy validation.
 
 MilanSetu helps reunite missing children and elderly people with their families at crowded festivals (Rath Yatra, Bali Jatra, melas). It replaces paper registers and loudspeaker announcements with:
@@ -10,6 +12,12 @@ MilanSetu helps reunite missing children and elderly people with their families 
 - a complete case timeline
 
 Guardian phone numbers are never shown to volunteers or desk staff.
+
+## Demo
+
+![MilanSetu demo](docs/demo/milansetu-demo.gif)
+
+▶️ **Full walkthrough video** (about 4 minutes, every role, with captions): [docs/demo/milansetu-demo.mp4](docs/demo/milansetu-demo.mp4)
 
 ## Status
 
